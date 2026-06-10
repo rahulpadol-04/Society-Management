@@ -14,6 +14,11 @@ use App\Services\Complaints\ComplaintService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Resident-facing complaint endpoints. Assignment and status transitions are
+ * pushed through the service (not a plain ->update()) because each of those
+ * needs to log an activity entry and fire the notification events.
+ */
 class ComplaintController extends Controller
 {
     use ApiResponse;
@@ -52,6 +57,8 @@ class ComplaintController extends Controller
     {
         $data = $request->validated();
 
+        // Route assignment and status changes through the service first so the
+        // activity log + events fire, then patch the plain editable fields.
         if (! empty($data['assigned_to'])) {
             $this->service->assign($complaint, (int) $data['assigned_to'], $data['note'] ?? null);
         }

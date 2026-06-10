@@ -14,6 +14,11 @@ use App\Services\Facilities\FacilityService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Facility booking flow: request -> approve/cancel. The double-booking /
+ * slot-clash check and the approval workflow are owned by FacilityService;
+ * the controller just wires the authenticated user and facility into it.
+ */
 class BookingController extends Controller
 {
     use ApiResponse;

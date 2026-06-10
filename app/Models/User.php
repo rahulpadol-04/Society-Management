@@ -13,6 +13,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Every user belongs to exactly one society (Super Admin is the exception –
+ * its society_id stays null). Roles/permissions come from HasRoles, tenant
+ * scoping from BelongsToTenant. 2FA secrets and recovery codes live encrypted
+ * at rest and are hidden from any array/JSON output.
+ */
 class User extends Authenticatable
 {
     use BelongsToTenant, HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;

@@ -12,6 +12,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use RuntimeException;
 
+/**
+ * Single endpoint: casting a vote on a poll. The service enforces the rules
+ * (poll still open, single- vs multiple-choice, no double voting) and throws a
+ * RuntimeException we translate into a 422 rather than a 500.
+ */
 class PollController extends Controller
 {
     use ApiResponse;

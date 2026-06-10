@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+/**
+ * Admin/accountant Blade screens for maintenance billing – the bulk
+ * bill-generation run, payment collection and CSV exports. Residents never
+ * reach here; they go through the API BillController instead.
+ */
 class MaintenanceController extends Controller
 {
     public function __construct(protected BillingService $service) {}

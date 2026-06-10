@@ -10,6 +10,11 @@ use App\Services\Analytics\DashboardAnalytics;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Feeds the dashboard widgets and Chart.js graphs. The heavy lifting (and
+ * per-role data shaping – a resident sees their flat, an admin the whole
+ * society) lives in DashboardAnalytics; this controller is a thin pass-through.
+ */
 class DashboardController extends Controller
 {
     use ApiResponse;

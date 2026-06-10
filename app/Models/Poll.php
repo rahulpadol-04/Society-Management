@@ -11,6 +11,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * A poll is optionally attached to a notice. Vote tallies are denormalised onto
+ * poll_options.votes_count for cheap reads, so totalVotes() sums that column
+ * rather than counting the votes table on every request.
+ */
 class Poll extends Model
 {
     use BelongsToTenant, HasFactory, SoftDeletes;
@@ -51,6 +56,8 @@ class Poll extends Model
 
     public function totalVotes(): int
     {
+        // SUM() comes back as a string from MySQL – cast so the : int return
+        // type doesn't blow up under strict_types.
         return (int) $this->options()->sum('votes_count');
     }
 }

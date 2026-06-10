@@ -13,6 +13,11 @@ use App\Services\Maintenance\BillingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Read-only + payment endpoints for maintenance bills (mobile/API side).
+ * Bill *generation* is an admin/web + scheduled-job concern, so it deliberately
+ * lives outside this controller – here residents only list, view and pay.
+ */
 class BillController extends Controller
 {
     use ApiResponse;
