@@ -2,6 +2,8 @@
 
 **A production-grade, multi-tenant Society & Apartment Management SaaS** built with Laravel 12, MySQL 8, Blade + Bootstrap 5, jQuery, DataTables and Chart.js. Designed for residential communities, gated societies, apartment complexes and property-management companies — scalable to 1000+ societies on a shared-database, row-level-isolation architecture.
 
+_Designed and built by **Rahul Padol** ([@rahulpadol-04](https://github.com/rahulpadol-04))._
+
 > A companion **Flutter mobile app** lives in a separate folder: `../communityos_mobile`.
 
 ---
@@ -104,3 +106,21 @@ public/css/app.css  public/js/app.js   theme + DataTables/Chart.js helpers
 ## 🛠️ Tech stack
 
 Laravel 12 · PHP 8.3 · MySQL 8 · Laravel Sanctum · Laravel Queues · Redis cache · AWS S3 (filesystem) · Blade · Bootstrap 5 · jQuery · AJAX · DataTables · Chart.js · Flutter (mobile).
+
+---
+
+## 📝 Design notes
+
+A few of the decisions behind the structure, and why I went the way I did:
+
+- **Shared DB over a database-per-tenant model.** With a target of 1000+ societies, spinning up a schema per tenant would have made migrations and connection pooling painful. I went with a single database and a `society_id` on every tenant table, enforced by a global Eloquent scope so isolation is automatic rather than something each query has to remember.
+- **Config as the source of truth for RBAC.** Roles, modules and permissions all live in `config/communityos.php`. The sidebar, the policies, the seeders and the permission matrix all read from that one file, so adding a module or tweaking a role doesn't mean editing five places and hoping they stay in sync.
+- **Services own the writes, not the controllers.** Anything with a side-effect (billing runs, complaint assignment, facility approval) goes through a service so the transaction, the audit/activity log and the events all happen together. Controllers stay thin and mostly handle authorization + shaping the response.
+- **Events + queued listeners for anything a user shouldn't wait on.** Notifications (mail/database/push) fire off queued listeners so the request returns quickly even when a bill run touches hundreds of flats.
+- **Tests focus on the rules that actually hurt if they break** — tenant isolation, RBAC, the billing math, and accounting balance invariants — rather than chasing a coverage number.
+
+## 👤 Author
+
+**Rahul Padol** — [github.com/rahulpadol-04](https://github.com/rahulpadol-04)
+
+Issues and suggestions are welcome via the repo's issue tracker.

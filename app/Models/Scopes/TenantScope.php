@@ -24,6 +24,9 @@ class TenantScope implements Scope
             return;
         }
 
+        // Qualify the column with the table name – without it a query that
+        // joins two tenant-aware tables hits an "ambiguous column" error,
+        // since both carry society_id.
         $builder->where(
             $model->getTable().'.'.$model->getTenantColumn(),
             $tenancy->id()

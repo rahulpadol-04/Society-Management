@@ -26,6 +26,9 @@ trait BelongsToTenant
         static::creating(function ($model): void {
             $tenancy = app('tenancy');
 
+            // Only stamp when society_id wasn't set explicitly – otherwise a
+            // Super Admin creating a row for a specific society (or a seeder)
+            // would have its chosen tenant silently overwritten by the request's.
             if (! $model->getAttribute($model->getTenantColumn()) && $tenancy->check()) {
                 $model->setAttribute($model->getTenantColumn(), $tenancy->id());
             }
