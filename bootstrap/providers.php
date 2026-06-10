@@ -1,0 +1,8 @@
+<?php
+
+return [
+    App\Providers\AppServiceProvider::class,
+    App\Providers\TenancyServiceProvider::class,
+    App\Providers\RepositoryServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
+];

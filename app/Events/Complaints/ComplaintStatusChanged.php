@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Events\Complaints;
+
+use App\Models\Complaint;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class ComplaintStatusChanged
+{
+    use Dispatchable, SerializesModels;
+
+    public function __construct(
+        public Complaint $complaint,
+        public string $from,
+        public string $to,
+    ) {}
+}
